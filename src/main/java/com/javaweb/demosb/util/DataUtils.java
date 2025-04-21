@@ -11,13 +11,9 @@ public class DataUtils {
     public static boolean isNullOrEmpty(String value) {
         return (value == null || value.isEmpty()) ;
     }
-//    public static void weightValidation(Float weight){
-//        if (weight == null || weight <= 0) {
-//            throw new BusinessException("Please enter a valid weight");
-//        }
-//        if (weight > 455) {
-//            throw new BusinessException("Weight cannot exceed 455 kg");
-//        }
-//        if
-//    }
+
+    public static float calculateBMI(Integer weight, Integer height) {
+        Float heightInMeters = height / 100.0f;
+        return weight / (heightInMeters * heightInMeters);
+    }
 }

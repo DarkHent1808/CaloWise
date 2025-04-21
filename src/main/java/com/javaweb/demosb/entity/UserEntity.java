@@ -47,9 +47,13 @@ public class UserEntity {
     @Column(name = "height", nullable = true)
     private Integer height;
 
+    @Column(name = "bmi", nullable = true)
+    private Float bmi;
+
     @Column(name = "age", nullable = true)
     private Integer age;
 
     @Column(name = "gender", nullable = true)
     private String gender;
+
 }

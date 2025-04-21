@@ -21,8 +21,6 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserByUserName(userName));
     }
 
-//    @GetMapping(value = "/")
-
     @GetMapping(value="/me")
     public ResponseEntity<?> getCurrentUser(){
         return ResponseEntity.ok(userService.getCurrentUser());

@@ -17,8 +17,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     Optional<UserEntity> findByEmail(String email);
 
-    @Query(nativeQuery = true, value = "UPDATE user SET weight = :weight, height = :height, age = :age, gender = :gender WHERE user_name = :username")
-    Optional<UserEntity> finishUserProfile(Integer weight, Integer height, Integer age, String gender, String username);
 
 
 }

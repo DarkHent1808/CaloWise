@@ -35,32 +35,36 @@ public class UserService {
         }
     }
 
-    public UserDTO finishUserProfile(Integer weight, Integer height, Integer age, String gender, String userName) {
-        if (DataUtils.isNullOrZero(weight) || DataUtils.isNullOrZero(height) || DataUtils.isNullOrZero(age) || DataUtils.isNullOrEmpty(gender)) {
-            throw new BusinessException("INVALID_INPUT");
-        }
-
-        userName = getUserByUserName(userName).getUserName();
-        Optional<UserEntity> user = userRepository.finishUserProfile(weight, height, age, gender, userName);
-
-        return modelMapper.map(user, UserDTO.class);
-    }
-
-    //Mai lam tiep
     @Transactional
     public UserDTO saveUser(UserDTO dto){
         UserEntity model;
         if (dto.getUserId() != null){
             model = userRepository.findById(dto.getUserId()).orElseThrow(() -> new BusinessException("USER_NOT_FOUND"));
-            model.setWeight(dto.getWeight());
-            model.setHeight(dto.getHeight());
-            model.setAge(dto.getAge());
-            model.setGender(dto.getGender());
-            userRepository.save(model);
-            return modelMapper.map(model, UserDTO.class);
+            dto.setUserName(model.getUserName());
+            dto.setPassword(model.getPassword());
+            dto.setRole(model.getRole());
+            dto.setEmail(model.getEmail());
+            dto.setCreatedAt(model.getCreatedAt());
+            if(DataUtils.isNullOrZero(dto.getWeight())){
+                dto.setWeight(model.getWeight());
             }
-        return null;
-        }
+            if(DataUtils.isNullOrZero(dto.getHeight())){
+                dto.setHeight(model.getHeight());
+            }
+            if(DataUtils.isNullOrZero(dto.getAge())){
+                dto.setAge(model.getAge());
+            }
+            if(DataUtils.isNullOrEmpty(dto.getGender())){
+                dto.setGender(model.getGender());
+            }
+            dto.setBmi(DataUtils.calculateBMI(dto.getWeight(), dto.getHeight()));
+
+            }
+        model = modelMapper.map(dto, UserEntity.class);
+        userRepository.save(model);
+        return modelMapper.map(model, UserDTO.class);
+    }
+
     public UserDTO getCurrentUser() {
         String currentUserName = auditorAware.getCurrentAuditor().orElse(null);
         if (currentUserName != null) {
